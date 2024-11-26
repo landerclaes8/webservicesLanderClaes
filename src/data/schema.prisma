@@ -1,0 +1,91 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  @@map("products")
+
+  id          Int       @id 
+  prijs       Float     
+  soort       String    @db.VarChar(255)
+  merk        String    @db.VarChar(255)
+  kleur       String    @db.VarChar(255)
+  maat        String    @db.VarChar(255)
+  stofsoort   String    @db.VarChar(255)
+  winkelmanden WinkelmandProduct[]
+  favoriet    FavorietProduct[]
+
+}
+
+model Winkelmand{
+  @@map("winkelmanden")
+
+  id          Int       @id 
+  user_id     Int       @unique
+  user        User      @relation(fields: [user_id], references: [id]) 
+  products    WinkelmandProduct[] 
+
+ 
+}
+
+model WinkelmandProduct{
+  @@map("winkelmand_product")
+
+  winkelmandId  Int
+  productId     Int
+
+  winkelmand   Winkelmand  @relation(fields: [winkelmandId], references: [id], onDelete: Cascade)
+  product      Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@id([winkelmandId, productId])
+
+}
+
+model User{
+  @@map("user")
+
+  id          Int        @id 
+  voornaam    String     @db.VarChar(255)
+  naam        String     @db.VarChar(255)
+  email       String     @unique @db.VarChar(255)
+  wachtwoord  String     @db.VarChar(255)
+  winkelmand  Winkelmand?
+  favoriet    Favoriet?  
+
+  winkelmand_id Int @unique
+  favoriet_id   Int @unique
+}
+
+model Favoriet{
+  @@map("favorieten")
+
+    id          Int       @id  
+    user_id     Int       @unique
+    user        User      @relation(fields: [user_id], references: [id])
+    products    FavorietProduct[]
+
+    
+}
+
+model FavorietProduct{
+  @@map("favoriet_product")
+
+  favorietId  Int
+  productId   Int
+
+  favoriet     Favoriet    @relation(fields: [favorietId], references: [id], onDelete: Cascade)
+  product      Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@id([favorietId, productId])
+}
