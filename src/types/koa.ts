@@ -2,9 +2,12 @@
 import type { ParameterizedContext } from 'koa';
 import type Application from 'koa';
 import type Router from '@koa/router';
+import type { SessionInfo } from './auth'
 
 
-export interface WebstoreState {} //momenteel nog geen state, dus interface is leeg
+export interface WebstoreState {
+  session: SessionInfo;
+} 
 
 //unknown zijn tijdelijk, types moeten voldoen aan eigen project
 export interface WebstoreContext<
@@ -25,11 +28,12 @@ export type KoaContext<
   Params = unknown,
   RequestBody = unknown,
   Query = unknown,
-> = ParameterizedContext<
-  // 👇 4
+> = 
+ParameterizedContext<
+  
   WebstoreState,
   WebstoreContext<Params, RequestBody, Query>,
-  ResponseBody | { error: string; details?: string }
+  ResponseBody
 >;
 
 

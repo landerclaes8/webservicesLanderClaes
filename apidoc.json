@@ -1,0 +1,12 @@
+{
+    "name": "Webshop API",
+    "version": "1.0.0",
+    "description": "API documentation for Webshop",
+    "title": "Webshop API Documentation",
+    "url": "http://localhost:9000",
+    "sampleUrl": "http://localhost:9000",
+    "template": {
+      "withCompare": true,
+      "withGenerator": true
+    }
+  }

@@ -12,7 +12,6 @@ export interface Product extends Entity {
 
 export interface ProductCreateInput {
     
-    id: number;
     prijs: number;
     soort: string;
     merk: string;
@@ -23,6 +22,7 @@ export interface ProductCreateInput {
 
 export interface GetAllProductsResponse extends ListResponse<Product> {};
 export interface ProductUpdateInput extends ProductCreateInput {};
+
 export interface GetProductByIdResponse extends Product{};
 export interface CreateProductResponse extends ProductCreateInput{};
 export interface CreateProductRequest extends GetProductByIdResponse {};

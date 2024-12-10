@@ -5,11 +5,23 @@ import { KoaContext, KoaRouter, WebstoreState, WebstoreContext } from '../types/
 
 
 
+/**
+ * @api {get} /health/ping Ping the server
+ * @apiName Ping
+ * @apiGroup Health
+ * @apiSuccess {String} message Pong message.
+ */
 const ping = async (ctx: KoaContext<PingResponse>) => {
     ctx.status = 200;
     ctx.body = healthService.ping();
   };
   
+  /**
+ * @api {get} /health/version Get server version
+ * @apiName GetVersion
+ * @apiGroup Health
+ * @apiSuccess {String} version Server version.
+ */
   const getVersion = async (ctx: KoaContext<VersionResponse>) => {
     ctx.status = 200;
     ctx.body = healthService.getVersion();

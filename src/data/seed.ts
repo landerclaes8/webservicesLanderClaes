@@ -1,8 +1,11 @@
 import { PrismaClient } from '@prisma/client';
+import { hashPassword } from '../core/password';
+import Role from '../core/roles';
 
 const prisma = new PrismaClient();
 
 async function main() {
+    const passwordHash = await hashPassword('abcde')
 
     await prisma.product.createMany({
         data: [
@@ -41,66 +44,46 @@ async function main() {
         data: [
             {
               id: 1,
-              voornaam: "Lander",
-              naam: "Claes",
+              name: "Lander Vlaes",
               email: "lander.claes@telenet.be",
-              wachtwoord: "abcde",
-              winkelmand_id: 1,
-              favoriet_id: 1  
+              password_hash: passwordHash,
+              roles: JSON.stringify([Role.ADMIN, Role.USER]),  
             },
             {
                 id: 2,
-                voornaam: "Lander",
-                naam: "Claes",
+                name: " Lander Claes",
                 email: "lander.claes@telenet.nl",
-                wachtwoord: "abcde",
-                winkelmand_id: 2,
-                favoriet_id: 2  
+                password_hash: passwordHash,
+                roles: JSON.stringify([Role.USER]), 
               },
               {
                 id: 3,
-                voornaam: "Lander",
-                naam: "Claes",
+                name: "Donald Trump",
                 email: "lander.claes@telenet.de",
-                wachtwoord: "abcde",
-                winkelmand_id: 3,
-                favoriet_id: 3  
+                password_hash: passwordHash,
+                roles: JSON.stringify([Role.USER]), 
               },
         ]
     })
 
-    await prisma.favoriet.createMany({
+    
+
+    await prisma.order.createMany({
         data:[
             {
                 id:1,
-                user_id:1
+                user_id:1,
+                date: new Date(2024, 5, 2, 19, 40)
             },
             {
                 id:2,
-                user_id:2
+                user_id:2,
+                date: new Date(2024, 10, 2, 19, 40)
             },
             {
                 id:3,
-                user_id:3
-            },
-
-
-        ]
-    })
-
-    await prisma.winkelmand.createMany({
-        data:[
-            {
-                id:1,
-                user_id:1
-            },
-            {
-                id:2,
-                user_id:2
-            },
-            {
-                id:3,
-                user_id:3
+                user_id:3,
+                date: new Date(2024, 6, 2, 19, 40)
             },
 
 
@@ -108,71 +91,20 @@ async function main() {
     })
 
     
-    await prisma.favorietProduct.createMany({
-
-        data: [
-            {
-                favorietId: 1,
-                productId: 1
-            },
-            {
-                favorietId: 1,
-                productId: 2
-            },{
-                favorietId: 1,
-                productId: 3
-            },{
-                favorietId: 2,
-                productId: 1
-            },{
-                favorietId: 2,
-                productId: 2
-            },{
-                favorietId: 2,
-                productId: 3
-            },{
-                favorietId: 3,
-                productId: 1
-            },{
-                favorietId: 3,
-                productId: 2
-            },{
-                favorietId: 3,
-                productId: 3
-            },
-
-        ]
-    })
-
-    await prisma.winkelmandProduct.createMany({
+ await prisma.orderProduct.createMany({
         data:[
             {
-                winkelmandId:1,
-                productId:1
+                orderId:1,
+                productId:1,
+                aantal: 2,
             },{
-                winkelmandId:1,
-                productId:2
+                orderId:2,
+                productId:2,
+                aantal: 3,
             },{
-                winkelmandId:1,
-                productId:3
-            },{
-                winkelmandId:2,
-                productId:1
-            },{
-                winkelmandId:2,
-                productId:2
-            },{
-                winkelmandId:2,
-                productId:3
-            },{
-                winkelmandId:3,
-                productId:1
-            },{
-                winkelmandId:3,
-                productId:2
-            },{
-                winkelmandId:3,
-                productId:3
+                orderId:3,
+                productId:3,
+                aantal: 7,
             },
         ]
     })

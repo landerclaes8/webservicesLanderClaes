@@ -1,6 +1,6 @@
 { //alle components https://aka.ms/tsconfig
   "compilerOptions": {
-    "target": "es2022",                               /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
+    "target": "ES2022",                               /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
     "module": "commonjs",                             /* Specify what module code is generated. */
     "resolveJsonModule": true,                        /* Enable importing .json files. */
     "outDir": "./build",                              /* Specify an output folder for all emitted files. */
@@ -17,11 +17,12 @@
     "noFallthroughCasesInSwitch": true,               /* Enable error reporting for fallthrough cases in switch statements. */
     "noUncheckedIndexedAccess": true,                 /* Add 'undefined' to a type when accessed using an index. */
     "noImplicitOverride": true,                       /* Ensure overriding members in derived classes are marked with an override modifier. */
+    "skipLibCheck": true
   },
   "include": [
     "**/*.ts"
   ],
-  "exclude": [
-    "test"
-  ]
+  //"exclude": [
+    //"test"
+  //]
 }

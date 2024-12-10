@@ -16,76 +16,54 @@ datasource db {
 model Product {
   @@map("products")
 
-  id          Int       @id 
+  id          Int       @id @default(autoincrement()) @db.UnsignedInt
   prijs       Float     
   soort       String    @db.VarChar(255)
   merk        String    @db.VarChar(255)
   kleur       String    @db.VarChar(255)
   maat        String    @db.VarChar(255)
   stofsoort   String    @db.VarChar(255)
-  winkelmanden WinkelmandProduct[]
-  favoriet    FavorietProduct[]
+
+  Orders OrderProduct[]
+  
 
 }
 
-model Winkelmand{
-  @@map("winkelmanden")
+model Order{
+  @@map("order")
 
-  id          Int       @id 
-  user_id     Int       @unique
+  id          Int       @id @default(autoincrement()) @db.UnsignedInt
+  user_id     Int       @db.UnsignedInt
+  date        DateTime  @db.DateTime(0)
+  orderproduct    OrderProduct[] 
+
   user        User      @relation(fields: [user_id], references: [id]) 
-  products    WinkelmandProduct[] 
 
- 
 }
 
-model WinkelmandProduct{
-  @@map("winkelmand_product")
+model OrderProduct{
+  @@map("orderProduct")
 
-  winkelmandId  Int
-  productId     Int
+  orderId       Int        @db.UnsignedInt  
+  productId     Int        @db.UnsignedInt
+  aantal        Int
 
-  winkelmand   Winkelmand  @relation(fields: [winkelmandId], references: [id], onDelete: Cascade)
+  order        Order       @relation(fields: [orderId], references: [id], onDelete: Cascade)
   product      Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
 
-  @@id([winkelmandId, productId])
+  @@id([orderId, productId])
 
 }
 
 model User{
   @@map("user")
 
-  id          Int        @id 
-  voornaam    String     @db.VarChar(255)
-  naam        String     @db.VarChar(255)
-  email       String     @unique @db.VarChar(255)
-  wachtwoord  String     @db.VarChar(255)
-  winkelmand  Winkelmand?
-  favoriet    Favoriet?  
+  id          Int        @id @default(autoincrement()) @db.UnsignedInt
+  name        String     @unique(map: "idx_user_name_unique") @db.VarChar(255)
+  email       String     @unique(map: "idx_user_email_unique") @db.VarChar(255)
+  password_hash  String  @db.VarChar(255)
+  roles        Json
+  orders      Order[]
 
-  winkelmand_id Int @unique
-  favoriet_id   Int @unique
 }
 
-model Favoriet{
-  @@map("favorieten")
-
-    id          Int       @id  
-    user_id     Int       @unique
-    user        User      @relation(fields: [user_id], references: [id])
-    products    FavorietProduct[]
-
-    
-}
-
-model FavorietProduct{
-  @@map("favoriet_product")
-
-  favorietId  Int
-  productId   Int
-
-  favoriet     Favoriet    @relation(fields: [favorietId], references: [id], onDelete: Cascade)
-  product      Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
-
-  @@id([favorietId, productId])
-}
