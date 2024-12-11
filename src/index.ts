@@ -1,24 +1,23 @@
-// src/index.ts
-import createServer from './createServer'; // 👈 3
+import createServer from './createServer'; 
 
-// 👇 1
+
 async function main() {
-  // 👇 4
-  try {
-    const server = await createServer(); // 👈 5
-    await server.start(); // 👈 5
 
-    // 👇 6
+  try {
+    const server = await createServer(); 
+    await server.start(); 
+
+    
     async function onClose() {
-      await server.stop(); // 👈 6
-      process.exit(0); // 👈 8
+      await server.stop(); 
+      process.exit(0); 
     }
 
-    process.on('SIGTERM', onClose); // 👈 7
-    process.on('SIGQUIT', onClose); // 👈 7
+    process.on('SIGTERM', onClose); 
+    process.on('SIGQUIT', onClose); 
   } catch (error) {
-    console.log('\n', error); // 👈 4
-    process.exit(-1); // 👈 4
+    console.log('\n', error); 
+    process.exit(-1);
   }
 }
 

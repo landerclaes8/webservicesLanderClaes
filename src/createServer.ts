@@ -1,5 +1,5 @@
-// src/createServer.ts
 import Koa from 'koa';
+import config from 'config'
 
 import { getLogger } from './core/logging';
 import { initializeData, shutdownData } from './data';
@@ -9,16 +9,17 @@ import type {
   KoaApplication,
   WebstoreContext,
   WebstoreState,
-} from './types/koa'; // 👈 1
+} from './types/koa';
 
-// 👇 1
+const PORT = config.get<number>('port');
+
 export interface Server {
   getApp(): KoaApplication;
   start(): Promise<void>;
   stop(): Promise<void>;
 }
 
-// 👇 2
+
 export default async function createServer(): Promise<Server> {
   const app = new Koa<WebstoreState, WebstoreContext>();
 
@@ -26,16 +27,16 @@ export default async function createServer(): Promise<Server> {
   await initializeData();
   installRest(app);
 
-  // 👇 3
+
   return {
     getApp() {
       return app;
     },
 
     start() {
-      return new Promise<void>((resolve) => {
-        app.listen(9000, () => {
-          getLogger().info('🚀 Server listening on http://localhost:9000');
+      return new Promise<void>((resolve) => { //9000 vervangen door PORT variabele
+        app.listen(PORT, () => {
+          getLogger().info(`🚀 Server listening on http://localhost:${PORT}`);
           resolve();
         });
       });
