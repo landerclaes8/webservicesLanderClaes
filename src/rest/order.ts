@@ -9,9 +9,10 @@ import validate from '../core/validation';
 import { requireAuthentication } from '../core/auth';
 
 /**
- * @api {get} /orders Get all orders
+ * @api {get} /api/orders Get all orders
  * @apiName GetAllOrders
  * @apiGroup Orders
+ * @apiHeader {String} Authorization Bearer-token. Format: `Bearer <token>`
  * @apiPermission admin
  * @apiSuccess {Object[]} items List of orders.
  * @apiError (403) Forbidden You are not allowed to view this part of the application
@@ -27,9 +28,10 @@ const getAllOrders = async (ctx: KoaContext<getAllOrdersResponse>) => {
 getAllOrders.validationScheme = null;
 
 /**
- * @api {get} /orders/:id Get order by ID
+ * @api {get} /api/orders/:id Get order by ID
  * @apiName GetOrderById
  * @apiGroup Orders
+ * @apiHeader {String} Authorization Bearer-token. Format: `Bearer <token>`
  * @apiPermission user
  * @apiParam {Number} id Order's unique ID.
  * @apiSuccess {Object} order Order details.
@@ -51,9 +53,10 @@ getOrderById.validationScheme = {
 };
 
 /**
- * @api {post} /orders Create a new order
+ * @api {post} /api/orders Create a new order
  * @apiName CreateOrder
  * @apiGroup Orders
+ * @apiHeader {String} Authorization Bearer-token. Format: `Bearer <token>`
  * @apiPermission user
  * @apiBody {Object[]} orderProducts List of order products.
  * @apiBody {Number} orderProducts.productId Product ID.
@@ -89,10 +92,11 @@ voegOrderToe.validationScheme = {
 };
 
 /**
- * @api {delete} /orders/:id Delete order by ID
+ * @api {delete} /api/orders/:id Delete order by ID
  * @apiName DeleteOrder
  * @apiGroup Orders
  * @apiPermission user
+ * @apiHeader {String} Authorization Bearer-token. Format: `Bearer <token>`
  * @apiParam {Number} id Order's unique ID.
  * @apiSuccess {Void} 204 No Content.
  * @apiError (403) Forbidden You are not allowed to view this part of the application

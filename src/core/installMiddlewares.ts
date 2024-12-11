@@ -9,7 +9,7 @@ import koaHelmet from 'koa-helmet';
 const NODE_ENV = config.get<string>('env');
 const CORS_ORIGINS = config.get<string[]>('cors.origins');
 const CORS_MAX_AGE = config.get<number>('cors.maxAge');
-
+const isDevelopment = NODE_ENV === 'development';
 
 export default function installMiddlewares(app: KoaApplication) {
   app.use(
@@ -48,7 +48,9 @@ export default function installMiddlewares(app: KoaApplication) {
   });
 
   app.use(bodyParser());
-  app.use(koaHelmet());
+ // app.use(koaHelmet({
+   // contentSecurityPolicy: !isDevelopment,
+ // }));
 
   app.use(async (ctx, next) => {
     try {

@@ -1,7 +1,0 @@
-{
-    "env": "development",
-    "log": {
-      "level": "info",
-      "disabled": false
-    }
-  }

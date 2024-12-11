@@ -12,7 +12,7 @@ import type {
 import type { LoginResponse, LoginRequest } from '../types/user';
 
 /**
- * @api {post} /sessions Login
+ * @api {post} /api/sessions Login
  * @apiName Login
  * @apiGroup Sessions
  * @apiDescription User session management

@@ -1,11 +1,12 @@
 export default{
   port: 9000,
+  env: "development",
     log:{
         level:'silly',
         disabled:false,
     },
     cors: {
-        origins: ['http://localhost:5173'],
+        origins: ['*'],//['http://localhost:5173', 'http://localhost:5500'],
         maxAge: 3 * 60 * 60,
       },
 

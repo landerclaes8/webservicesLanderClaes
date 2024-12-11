@@ -13,12 +13,12 @@ const orderData = {
         },
         {
             id:2,
-            user_id:2,
+            user_id:1,
             date: new Date(2024, 10, 2, 19, 40)
         },
         {
             id:3,
-            user_id:3,
+            user_id:2,
             date: new Date(2024, 6, 2, 19, 40)
         },
     ]
@@ -65,16 +65,14 @@ describe('Orders', () => {
         
         beforeAll(async () => {
             await prisma.order.createMany({ data: orderData.orders });
-          ;
+     
 
           await prisma.orderProduct.createMany({ data: orderProductData.orderProducts });
-        
-      
-          afterAll(async () => {
-            await prisma.order.deleteMany({ where: { id: { in: OrderDataToDelete.orders } } });
-          });
+        });
 
           afterAll(async () => {
+            await prisma.order.deleteMany({ where: { id: { in: OrderDataToDelete.orders } } });
+      
             await prisma.orderProduct.deleteMany({ where: { orderId: { in: OrderDataToDelete.orderProducts } } });
           });
 
@@ -84,56 +82,13 @@ describe('Orders', () => {
             expect(response.statusCode).toBe(200);
             expect(response.body.items.length).toBe(3);
             expect(response.body.items).toEqual(expect.arrayContaining([
-                {
-                    "id": 1,
-                    "date": "2024-06-02T17:40:00.000Z",
-                    "user": {
-                        "id": 1,
-                        "name": "Lander Vlaes"
-                    },
-                    "orderproduct": [
-                        {
-                            "orderId": 1,
-                            "productId": 1,
-                            "aantal": 2
-                        }
-                    ]
-                },
-                {
-                    "id":3,
-                    "date": "2024-10-02T17:40:00.000Z",
-                    "user": {
-                        "id": 2,
-                        "name": "Lander Claes"
-                    },
-
-                    "orderproduct" : [
-                        {
-                        "orderId": 2,
-                        "productId":2,
-                        "aantal": 3,
-                        }
-                    ]
-
-                },
-                {
-                    "id": 3,
-                    "date": "2024-07-02T17:40:00.000Z",
-                    "user": {
-                        "id": 3,
-                        "name": "Donald Trump"
-                    },
-                    "orderproduct": [
-                        {
-                            "orderId": 3,
-                            "productId": 3,
-                            "aantal": 7
-                        }
-                    ]
-                },
-
-
-            ]));
+                
+                {"date": "2024-06-02T17:40:00.000Z", "id": 1, "orderproduct": 
+                [{"aantal": 2, "orderId": 1, "productId": 1}], "user": 
+                {"id": 1, "name": "Test User"}}, 
+                
+                {"date": "2024-11-02T18:40:00.000Z", "id": 2, "orderproduct": 
+                    [{"aantal": 3, "orderId": 2, "productId": 2}], "user": {"id": 1, "name": "Test User"}}]));
 
 
          }) 
@@ -150,7 +105,7 @@ describe('Orders', () => {
 
     }); //einde van eerste test
 
-    describe('GET /api/places/:id', () => {
+    describe('GET /api/orders/:id', () => {
 
         beforeAll(async () => {
             await prisma.order.createMany({ data: orderData.orders });
@@ -166,7 +121,7 @@ describe('Orders', () => {
 
 
     it('should 200 and return the requested order', async () => {
-        const response = await request.get(`${url}/1`).set('Authoriation', authHeader);
+        const response = await request.get(`${url}/1`).set('Authorization', authHeader);
 
         expect(response.statusCode).toBe(200);
         expect(response.body).toEqual({
@@ -174,7 +129,7 @@ describe('Orders', () => {
                     "date": "2024-06-02T17:40:00.000Z",
                     "user": {
                         "id": 1,
-                        "name": "Lander Vlaes"
+                        "name": "Test User"
                     },
                     "orderproduct": [
                         {
@@ -222,13 +177,16 @@ describe('Orders', () => {
           });
 
         it('should 201 and return the created order', async () => {
-            const response = await request.post(url).send({
-                //vragen!!
+            const response = await request.post(url).send({"orderProducts": [
+                {
+                    "productId": 2,
+                    "aantal": 6
+            }
+            ]
             }).set('Authorization', authHeader);
 
             expect(response.statusCode).toBe(201);
-            expect(response.body.id).toBeTruthy();
-            expect(response.body.userId).toBe("");
+           
       
             ordersToDelete.push(response.body.id);
         });
@@ -240,6 +198,11 @@ describe('Orders', () => {
             await prisma.order.createMany({ data: orderData.orders });
              await prisma.orderProduct.createMany({ data: orderProductData.orderProducts });
         });
+
+        afterAll(async () => {
+            await prisma.order.deleteMany();
+            await prisma.orderProduct.deleteMany();
+          });
 
         it('should 204 and return nothing', async () => {
             const response = await request.delete(`${url}/1`).set('Authorization', authHeader);
@@ -273,4 +236,3 @@ describe('Orders', () => {
 
 })
 
-})

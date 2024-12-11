@@ -9,7 +9,7 @@ import validate from '../core/validation';
 import { requireAuthentication } from '../core/auth';
 
 /**
- * @api {get} /products Get all products
+ * @api {get} /api/products Get all products
  * @apiName GetAllProducts
  * @apiGroup Products
  * @apiSuccess {Object[]} items List of products.
@@ -24,7 +24,7 @@ const getAllProducts = async (ctx: KoaContext<GetAllProductsResponse>) => {
 getAllProducts.validationScheme = null;
 
 /**
- * @api {get} /products/:id Get product by ID
+ * @api {get} /api/products/:id Get product by ID
  * @apiName GetProductById
  * @apiGroup Products
  * @apiParam {Number} id Product's unique ID.
@@ -43,7 +43,7 @@ getProductById.validationScheme = {
 };
 
 /**
- * @api {post} /products Create a new product
+ * @api {post} /api/products Create a new product
  * @apiName CreateProduct
  * @apiGroup Products
  * @apiPermission admin
@@ -76,7 +76,7 @@ createProduct.validationScheme = {
 };
 
 /**
- * @api {put} /products/:id Update a product
+ * @api {put} /api/products/:id Update a product
  * @apiName UpdateProduct
  * @apiGroup Products
  * @apiPermission admin
@@ -109,7 +109,7 @@ updateProduct.validationScheme = {
 };
 
 /**
- * @api {delete} /products/:id Delete a product
+ * @api {delete} /api/products/:id Delete a product
  * @apiName DeleteProduct
  * @apiGroup Products
  * @apiPermission admin

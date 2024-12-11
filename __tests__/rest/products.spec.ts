@@ -9,7 +9,7 @@ import testAuthHeader from "../helpers/testAuthHeaders";
 const productData = {
     products: [
         {
-            id: 1,
+            id: 4,
             prijs: 36.99,
             soort: "Trui",
             merk: "Arte",
@@ -18,7 +18,7 @@ const productData = {
             stofsoort: "Katoen"
         },
 
-        {   id: 2,
+        {   id: 5,
             prijs: 36.99,
             soort: "T-shirt",
             merk: "Arte",
@@ -27,7 +27,7 @@ const productData = {
             stofsoort: "Katoen"
         },
         {
-            id: 3,
+            id: 6,
             prijs: 36.99,
             soort: "Broek",
             merk: "Arte",
@@ -39,7 +39,7 @@ const productData = {
 };
 
 const productDataToDelete = {
-    products: [1,2,3]
+    products: [4,5,6]
 };
 
 describe('Products', () => {
@@ -58,15 +58,7 @@ describe('Products', () => {
 
     describe('GET /api/products', () => {
 
-        beforeAll(async () => {
-            await prisma.product.createMany({data: productData.products})
-        });
-
-        afterAll(async () => {
-            await prisma.product.deleteMany({where: {id: { in: productDataToDelete.products}}});
-        });
-
-        it('should 200 and return all places', async () => {
+        it('should 200 and return all products', async () => {
             const response = await request.get(url).set('Authorization', authHeader);
 
             expect(response.statusCode).toBe(200);
@@ -100,7 +92,8 @@ describe('Products', () => {
                     stofsoort: "Katoen"
             }]));
     });
-});
+
+
 
 it('should 400 when given an argument', async () => {
     const response = await request.get(`${url}?invalid=true`).set('Authorization', authHeader);
@@ -109,21 +102,14 @@ it('should 400 when given an argument', async () => {
     expect(response.body.code).toBe('VALIDATION_FAILED');
     expect(response.body.details.query).toHaveProperty('invalid');
  
+});
+  
+testAuthHeader(() => request.get(url)); 
 
-  testAuthHeader(() => request.get(url)); 
 });
 
 
-
 describe('GET /api/products/:id', () => {
-
-    beforeAll(async () => {
-        await prisma.product.createMany({data: productData.products})
-    });
-
-    afterAll(async () => {
-        await prisma.product.deleteMany({where: {id: { in: productDataToDelete.products}}});
-    });
 
     it('should 200 and return the requested product', async() => {
         const response = await request.get(`${url}/1`).set('Authorization', authHeader);
@@ -139,6 +125,7 @@ describe('GET /api/products/:id', () => {
                     stofsoort: "Katoen"
         });
 
+    })
         it('should 404 when requesting not existing product', async () => {
             const response = await request.get(`${url}/200`).set('Authorization', authHeader);
       
@@ -162,7 +149,7 @@ describe('GET /api/products/:id', () => {
       
           testAuthHeader(() => request.get(`${url}/1`));
         });   
-    });
+
 
 
     describe('POST /api/products', () => {
@@ -214,8 +201,12 @@ describe('GET /api/products/:id', () => {
                 await prisma.product.createMany({data: productData.products})
             });
 
+            afterAll(async () => {
+                await prisma.product.deleteMany({where: {id: {in: productDataToDelete.products}}})
+            })
+
             it('should 204 and return nothing', async () => {
-                const response = await request.delete(`${url}/1`).set('Authorization', authHeader);
+                const response = await request.delete(`${url}/5`).set('Authorization', authHeader);
           
                 expect(response.statusCode).toBe(204);
                 expect(response.body).toEqual({});
@@ -243,12 +234,5 @@ describe('GET /api/products/:id', () => {
               testAuthHeader(() => request.delete(`${url}/1`));
 
 
-        })//einde vierde test
-});
-
-
-
-
-
-
-
+        })
+    })

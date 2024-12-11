@@ -1,4 +1,9 @@
 export default{
+  env: 'testing',
+  log:{
+    level:'silly',
+    disabled:true,
+},
         auth: {
           maxDelay: 0,
         

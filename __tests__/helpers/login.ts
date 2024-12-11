@@ -2,7 +2,7 @@ import type supertest from 'supertest';
 
 export const login = async (supertest: supertest.Agent): Promise<string> => {
   const response = await supertest.post('/api/sessions').send({
-    email: 'test.user@hogent.be',
+    email: 'admin.user@hogent.be',
     password: '12345678',
   });
 

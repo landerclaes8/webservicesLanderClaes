@@ -10,6 +10,7 @@ export default function withServer(setter: (s: supertest.Agent) => void): void {
 
   beforeAll(async () => {
     server = await createServer();
+   
 
     const passwordHash = await hashPassword('12345678');
     await prisma.user.createMany({
@@ -29,7 +30,39 @@ export default function withServer(setter: (s: supertest.Agent) => void): void {
           roles: JSON.stringify([Role.ADMIN, Role.USER]),
         },
       ],
-    });
+    })
+  
+    await prisma.product.createMany({
+      data: [
+          {
+              id: 1,
+              prijs: 36.99,
+              soort: "Trui",
+              merk: "Arte",
+              kleur: "rood",
+              maat: "XL",
+              stofsoort: "Katoen"
+          },
+  
+          {   id: 2,
+              prijs: 36.99,
+              soort: "T-shirt",
+              merk: "Arte",
+              kleur: "rood",
+              maat: "XL",
+              stofsoort: "Katoen"
+          },
+          {
+              id: 3,
+              prijs: 36.99,
+              soort: "Broek",
+              merk: "Arte",
+              kleur: "rood",
+              maat: "XL",
+              stofsoort: "Katoen"
+          },
+      ],
+  });
 
     setter(supertest(server.getApp().callback()));
   });

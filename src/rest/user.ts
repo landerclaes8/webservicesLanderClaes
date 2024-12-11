@@ -35,7 +35,7 @@ const checkUserId = (ctx: KoaContext<unknown, GetUserRequest>, next: Next) => {
 };
 
 /**
- * @api {get} /users Get all users
+ * @api {get} /api/users Get all users
  * @apiName GetAllUsers
  * @apiGroup Users
  * @apiPermission admin
@@ -50,7 +50,7 @@ const getAllUsers = async (ctx: KoaContext<GetAllUsersResponse>) => {
 getAllUsers.validationScheme = null;
 
 /**
- * @api {post} /users Register a new user
+ * @api {post} /api/users Register a new user
  * @apiName RegisterUser
  * @apiGroup Users
  * @apiBody {String} email User's email.
@@ -73,7 +73,7 @@ registerUser.validationScheme = {
 };
 
 /**
- * @api {get} /users/:id Get user by ID
+ * @api {get} /api/users/:id Get user by ID
  * @apiName GetUserById
  * @apiGroup Users
  * @apiPermission user
@@ -101,7 +101,7 @@ getUserById.validationScheme = {
 };
 
 /**
- * @api {put} /users/:id Update user
+ * @api {put} /api/users/:id Update user
  * @apiName UpdateUser
  * @apiGroup Users
  * @apiPermission user
@@ -128,7 +128,7 @@ updateUserById.validationScheme = {
 };
 
 /**
- * @api {delete} /users/:id Delete user by ID
+ * @api {delete} /api/users/:id Delete user by ID
  * @apiName DeleteUser
  * @apiGroup Users
  * @apiPermission admin
